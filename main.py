@@ -16,6 +16,7 @@ def main():
         print(prompt.text)
     else:
         print("No arguments provided.")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

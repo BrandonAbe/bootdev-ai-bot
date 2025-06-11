@@ -18,7 +18,7 @@ def generate_content(client, messages, verbose):
 
 def main():
     load_dotenv()
-    verbose = "--verbose" in sys.arg
+    verbose = "--verbose" in sys.argv
     args = [arg for arg in sys.argv[1:] if not arg.startswith("--")] # List Comprehension
     if not args:
         print("AI Code Assistant")

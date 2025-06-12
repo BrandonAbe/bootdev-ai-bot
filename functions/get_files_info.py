@@ -13,7 +13,7 @@ def get_files_info(working_directory, directory=None):
         files_info = []
         for filename in os.listdir(target_dir):
             filepath = os.path.join(target_dir, filename)
-            file_size = 0
+            file_size = 0 # Default size
             is_dir = os.path.isdir(filepath)
             file_size = os.path.getsize(filepath)
             files_info.append(
@@ -21,4 +21,4 @@ def get_files_info(working_directory, directory=None):
             )
         return "\n".join(files_info)
     except Exception as e:
-        return f"Error listing files: {e}"
+        return f"Error: {e}"

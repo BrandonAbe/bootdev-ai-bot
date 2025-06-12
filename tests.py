@@ -6,7 +6,5 @@ def test():
     print(result)
     print("")
 
-test()
-
 if __name__ == "__main__":
     test()

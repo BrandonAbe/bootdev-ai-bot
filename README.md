@@ -3,6 +3,10 @@
 This project is based on the **[Boot.dev](https://www.boot.dev)** course: [Build an AI Agent in Python](https://www.boot.dev/courses/build-ai-agent-python). 
 It walks through building a simple AI agent from scratch using Python, with an emphasis on modular, testable code.
 
+# IMPORTANT NOTICE
+
+This project does NOT have all the security and safety features that a production AI agent would have. It is for learning purposes only.
+
 ## 🚀 What It Does
 
 The AI agent is designed to perform tasks like:

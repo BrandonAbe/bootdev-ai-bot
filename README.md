@@ -5,7 +5,7 @@ It walks through building a simple AI agent from scratch using Python, with an e
 
 # IMPORTANT NOTICE
 
-This project does NOT have all the security and safety features that a production AI agent would have. It is for learning purposes only.
+This project does NOT have all the security and safety features that a production AI agent would have. It is for learning purposes only. Use at your own risk.
 
 ## 🚀 What It Does
 

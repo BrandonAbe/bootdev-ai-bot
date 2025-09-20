@@ -1,5 +1,7 @@
 import os
 import subprocess
+from google.genai import types
+
 
 def run_python_file(working_directory:str, file_path:str, args=None):
     abs_working_dir = os.path.abspath(working_directory) # Convert to abs path
@@ -15,7 +17,7 @@ def run_python_file(working_directory:str, file_path:str, args=None):
         return f'Error: File "{file_path}" not found.'
     
     if not file_path.endswith(".py"):
-        f'Error: "{file_path}" is not a Python file.'
+        return f'Error: "{file_path}" is not a Python file.'
 
     try:
         commands = ["python3", abs_file_path]
@@ -39,8 +41,9 @@ def run_python_file(working_directory:str, file_path:str, args=None):
 
     except Exception as e:
         return f"Error: executing Python file: {e}"
-    
-    schema_run_python_file = types.FunctionDeclaration(
+
+
+schema_run_python_file = types.FunctionDeclaration(
     name="run_python_file",
     description="Executes a Python file within the working directory and returns the output from the interpreter.",
     parameters=types.Schema(

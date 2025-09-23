@@ -20,7 +20,17 @@ def call_function(function_call_part, verbose=False):
         print(f" - Calling function: {function_call_part.name}")
     
     if function_name not in function_map:
-        pass
+        return types.Content(
+            role="tool",
+            parts=[
+                types.Part.from_function_response(
+                    name=function_name,
+                    response={"error": f"Unknown function: {function_name}"},
+                )
+            ],
+        )
+    
+    
 
 
 

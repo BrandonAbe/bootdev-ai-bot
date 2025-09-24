@@ -3,7 +3,7 @@ import os
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
-from call_function import available_functions
+from call_function import available_functions, call_function
 from prompts import system_prompt
 
 
@@ -14,14 +14,26 @@ def generate_content(client, messages, verbose):
         config=types.GenerateContentConfig(
             tools=[available_functions], system_instruction=system_prompt)
     )
+
     if verbose:
         print("Prompt tokens:", response.usage_metadata.prompt_token_count)
         print("Response tokens:", response.usage_metadata.candidates_token_count)
     print("Response:")
+    
     if not response.function_calls: # check if any available function was used
         return response.text
+    
+    function_response = [] # Initialize function_response list
     for function_call_part in response.function_calls:
-        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+        function_call_result = call_function(function_call_part, verbose)
+        try:
+            function_reponse = function_call_result.parts[0].function_response.response
+        except AttributeError:
+            raise RuntimeError("Runtime Error: Function call did not return a response.")
+        # Check if response is a dictionary AND verbose was set...
+        if isinstance(function_response, dict) and verbose:
+            print(f"-> {function_call_result.parts[0].function_response.response}")
+
 
 def main():
     load_dotenv()

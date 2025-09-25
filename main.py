@@ -23,7 +23,7 @@ def generate_content(client, messages, verbose):
     if not response.function_calls: # check if any available function was used
         return response.text
     
-    function_response = [] # Initialize function_response list
+    function_responses = [] # Initialize function_response list
     for function_call_part in response.function_calls:
         function_call_result = call_function(function_call_part, verbose)
         try:
@@ -31,9 +31,13 @@ def generate_content(client, messages, verbose):
         except AttributeError:
             raise RuntimeError("Runtime Error: Function call did not return a response.")
         # Check if response is a dictionary AND verbose was set...
-        if isinstance(function_response, dict) and verbose:
-            print(f"-> {function_call_result.parts[0].function_response.response}")
-
+        if isinstance(function_responses, dict) and "result" in function_response:
+            print(f"-> {function_call_result.parts[0].function_responses.response}")
+        else:
+            print("-> Function response:", function_reponse)
+    for function_response in function_responses:
+        messages.append(types.Content(role="tool",parts=[function_response]))
+    return response.text
 
 def main():
     load_dotenv()
@@ -58,7 +62,9 @@ def main():
         types.Content(role="user", parts=[types.Part(text=user_prompt)]),
     ]
 
-    generate_content(client, messages, verbose)
+    # Generate updated response to feed LLM again
+    final_result = generate_content(client, messages, verbose)
+    print(final_result)
 
 if __name__ == "__main__":
     main()

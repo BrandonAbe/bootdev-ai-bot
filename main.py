@@ -27,16 +27,32 @@ def generate_content(client, messages, verbose):
     for function_call_part in response.function_calls:
         function_call_result = call_function(function_call_part, verbose)
         try:
-            function_reponse = function_call_result.parts[0].function_response.response
+            function_response = function_call_result.parts[0].function_response.response
         except AttributeError:
             raise RuntimeError("Runtime Error: Function call did not return a response.")
-        # Check if response is a dictionary AND verbose was set...
-        if isinstance(function_responses, dict) and "result" in function_response:
-            print(f"-> {function_call_result.parts[0].function_responses.response}")
+        # Print with actual newlines if string contains literal \n
+        if isinstance(function_response, dict) and "result" in function_response:
+            result = function_response["result"]
+            if isinstance(result, str):
+                print("-> Function response:\n", result.replace("\\n", "\n"))
+            else:
+                print("-> Function response:", result)
+            function_responses.append(function_response)
         else:
-            print("-> Function response:", function_reponse)
+            print("-> Function response:", function_response)
+            function_responses.append(function_response)
     for function_response in function_responses:
-        messages.append(types.Content(role="tool",parts=[function_response]))
+        messages.append(
+            types.Content(
+            role="tool",
+            parts=[
+                types.Part.from_function_response(
+                    name="function_response",
+                    response=function_response
+                )
+            ]
+        )
+    )
     return response.text
 
 def main():
@@ -64,7 +80,9 @@ def main():
 
     # Generate updated response to feed LLM again
     final_result = generate_content(client, messages, verbose)
-    print(final_result)
+    # Check if response.text is not None before printing
+    if final_result:
+        print(final_result)
 
 if __name__ == "__main__":
     main()

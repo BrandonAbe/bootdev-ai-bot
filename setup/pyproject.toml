@@ -1,0 +1,10 @@
+[project]
+name = "bootdev-ai-bot"
+version = "0.1.0"
+description = "Python AI Agent by Brandon Rosenblatt"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "google-genai==1.12.1",
+    "python-dotenv==1.1.0",
+]

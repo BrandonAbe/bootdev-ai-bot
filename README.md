@@ -20,10 +20,32 @@ This project is educational and showcases how AI agents work at a conceptual lev
 
 ## 🛠️ Technologies Used
 
-- Python 3.10+
+- Python 3.10+ for type hinting
 - `unittest` for unit testing
 - Command-line interface (CLI) tools (bash, git)
 - Built-in Python libraries + Google's Gemini API
 
 ## 📁 Project Structure
-[TBD]
+```
+bootdev-ai-bot/
+├── call_function.py
+├── config.py
+├── functions/
+│   ├── get_files_content.py
+│   ├── get_files_info.py
+│   ├── run_python_file.py
+│   └── write_file.py
+├── main.py
+├── prompts.py
+├── tests.py
+├── .env
+└── README.md
+```
+
+- `main.py` — Entry point for the AI bot CLI
+- `call_function.py` — Handles function calls and tool integration
+- `config.py` — Configuration settings (e.g., set working directory)
+- `functions/` — Modular function implementations for agent actions
+- `prompts.py` — System prompt 
+- `tests.py` — Unit and integration tests
+- `.env` — Environment variables (API key)

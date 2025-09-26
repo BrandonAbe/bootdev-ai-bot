@@ -7,6 +7,7 @@ from call_function import available_functions, call_function
 from prompts import system_prompt
 
 
+
 def generate_content(client, messages, verbose):
     response = client.models.generate_content(
         model="gemini-2.0-flash-001",
@@ -57,6 +58,10 @@ def generate_content(client, messages, verbose):
 
 def main():
     load_dotenv()
+    gemini_key = os.getenv("GEMINI_API_KEY")
+    if not gemini_key:
+        raise RuntimeError("Please set GEMINI_API_KEY in your .env file")
+
     verbose = "--verbose" in sys.argv
     args = [arg for arg in sys.argv[1:] if not arg.startswith("--")] # List Comprehension
     if not args:

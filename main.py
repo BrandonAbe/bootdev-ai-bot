@@ -59,9 +59,11 @@ def generate_content(client, messages, verbose):
 def main():
     load_dotenv()
     gemini_key = os.getenv("GEMINI_API_KEY")
-    if not gemini_key:
-        raise RuntimeError("Please set GEMINI_API_KEY in your .env file")
-
+    if not gemini_key or gemini_key.strip('"').strip() in {"", "YOUR_KEY_HERE"}:
+        raise RuntimeError(
+        "GEMINI_API_KEY is not set. Please edit your .env file "
+        "and replace YOUR_KEY_HERE with your actual API key."
+        )
     verbose = "--verbose" in sys.argv
     args = [arg for arg in sys.argv[1:] if not arg.startswith("--")] # List Comprehension
     if not args:

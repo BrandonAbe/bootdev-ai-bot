@@ -5,6 +5,7 @@ from google.genai import types
 from dotenv import load_dotenv
 from call_function import available_functions, call_function
 from prompts import system_prompt
+from config import MAX_ITERATIONS
 
 
 
@@ -13,48 +14,43 @@ def generate_content(client, messages, verbose):
         model="gemini-2.0-flash-001",
         contents=messages,
         config=types.GenerateContentConfig(
-            tools=[available_functions], system_instruction=system_prompt)
+            tools=[available_functions], system_instruction=system_prompt),
     )
 
     if verbose:
         print("Prompt tokens:", response.usage_metadata.prompt_token_count)
         print("Response tokens:", response.usage_metadata.candidates_token_count)
     print("Response:")
+
+    # Add each candidate's content (e.g., function call requests) to the messages for the next iteration
+    if response.candidates:
+        for candidate in response.candidates:
+            function_call_content = candidate.content
+            messages.append(function_call_content)
     
-    if not response.function_calls: # check if any available function was used
+    # Handle if there are no function calls by just returning the text response from the model
+    if not response.function_calls:
         return response.text
     
-    function_responses = [] # Initialize function_response list
+    function_responses = []  # Collect valid function call responses to send back to the model
     for function_call_part in response.function_calls:
         function_call_result = call_function(function_call_part, verbose)
-        try:
-            function_response = function_call_result.parts[0].function_response.response
-        except AttributeError:
-            raise RuntimeError("Runtime Error: Function call did not return a response.")
-        # Print with actual newlines if string contains literal \n
-        if isinstance(function_response, dict) and "result" in function_response:
-            result = function_response["result"]
-            if isinstance(result, str):
-                print("-> Function response:\n", result.replace("\\n", "\n"))
-            else:
-                print("-> Function response:", result)
-            function_responses.append(function_response)
-        else:
-            print("-> Function response:", function_response)
-            function_responses.append(function_response)
-    for function_response in function_responses:
-        messages.append(
-            types.Content(
-            role="tool",
-            parts=[
-                types.Part.from_function_response(
-                    name="function_response",
-                    response=function_response
-                )
-            ]
-        )
-    )
-    return response.text
+        # Each function_call_result.parts is a list of Part objects (i.e. should contain function_response)
+        for part in function_call_result.parts:
+            # Ensure the part has a function_response attribute before accessing it
+            if not hasattr(part, "function_response") or part.function_response is None:
+                raise Exception("Function call did not return a valid function_response.")
+            if verbose:
+                # Print the actual function response for debugging/trace
+                print(f"-> {part.function_response.response}")
+            function_responses.append(part)
+    
+    # If no valid function responses were collected, raise an error
+    if not function_responses:
+        raise Exception("No valid function responses were obtained from function calls, exiting...")
+
+    # Add all function responses as a new message with role "function" for the next model iteration
+    messages.append(types.Content(role="function", parts=function_responses))
 
 def main():
     load_dotenv()
@@ -71,25 +67,33 @@ def main():
         print('\nUsage: python main.py "your prompt here" [--verbose]')
         print('Example: python main.py "How do I build a calculator app?"')
         sys.exit(1)
-    user_prompt = " ".join(args)
 
+    user_prompt = " ".join(args)
     api_key = os.environ.get("GEMINI_API_KEY")
     client = genai.Client(api_key=api_key)
-
-    user_prompt = " ".join(args)
 
     if verbose:
         print(f"User prompt: {user_prompt}\n")
 
-    messages = [
-        types.Content(role="user", parts=[types.Part(text=user_prompt)]),
-    ]
+    messages = [types.Content(role="user", parts=[types.Part(text=user_prompt)]),]
 
-    # Generate updated response to feed LLM again
-    final_result = generate_content(client, messages, verbose)
-    # Check if response.text is not None before printing
-    if final_result:
-        print(final_result)
+    # Handle multiple iterations up to MAX_ITERATIONS
+    iter_count = 0
+    while True:
+        iter_count += 1
+        if iter_count > MAX_ITERATIONS:
+            print(f"Reached maximum allowed iterations ({MAX_ITERATIONS}). Stopping.")
+            sys.exit(1)
+        
+        # Check if response.text is not None before proceeding
+        try:
+            final_response = generate_content(client, messages, verbose)
+            if final_response:
+                print(f"Final Response: ", final_response)
+                break  # Exit loop if we have a valid final response
+        except Exception as e:
+            print(f"Error during content generation:", e)
+                
 
 if __name__ == "__main__":
     main()

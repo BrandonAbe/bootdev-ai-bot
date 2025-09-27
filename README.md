@@ -18,10 +18,37 @@ The AI agent is designed to perform tasks like:
 
 This project is educational and showcases how AI agents work at a conceptual level.
 
+## Usage
+
+1. **Install dependencies**  
+   ```sh
+   uv pip install -r requirements.txt
+   ```
+
+2. **Set up your `.env` file**  
+   Create a `.env` file in the project root with your Gemini API key:
+   ```
+   GEMINI_API_KEY=your-key-here
+   ```
+
+3. **Run the AI bot with a your prompt**  
+   ```sh
+   uv run main.py "run calculator/tests.py"
+   ```
+
+   Or, to fix a bug in your code:
+   ```sh
+   uv run main.py "Fix the bug in calculator/pkg/calculator: 3 + 7 * 2 shouldn't be 20"
+   ```
+
+   To see verbose output:
+   ```sh
+   uv run main.py "run calculator/tests.py" --verbose
+   ```
+
 ## 🛠️ Technologies Used
 
-- Python 3.10+ for type hinting
-- `unittest` for unit testing
+- Python 3.10+
 - Command-line interface (CLI) tools (bash, git)
 - Built-in Python libraries + Google's Gemini API
 

@@ -34,6 +34,8 @@ def generate_content(client, messages, verbose):
     
     function_responses = []  # Collect valid function call responses to send back to the model
     for function_call_part in response.function_calls:
+        # Debug: Print the working directory being used
+        # print("Current working directory: ", os.getcwd())
         function_call_result = call_function(function_call_part, verbose)
         # Each function_call_result.parts is a list of Part objects (i.e. should contain function_response)
         for part in function_call_result.parts:

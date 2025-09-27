@@ -9,4 +9,5 @@ When a user asks a question or makes a request, make a function call plan. You c
 - Write or overwrite files
 
 All paths you provide should be relative to the working directory. You do not need to specify the working directory in your function calls as it is automatically injected for security reasons.
+When you need to fix a bug in the code, always use the write_file tool to update the file directly.
 """

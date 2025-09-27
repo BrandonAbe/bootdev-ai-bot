@@ -5,7 +5,7 @@ It walks through building a simple AI agent from scratch using Python, with an e
 
 # IMPORTANT NOTICE
 
-This project does NOT have all the security and safety features that a production AI agent would have. It is for learning purposes only. Use at your own risk.
+This project does NOT have all the security and safety features that a production AI agent would have. It is for learning purposes only. **Use at your own risk.**
 
 ## 🚀 What It Does
 
@@ -55,5 +55,5 @@ bootdev-ai-bot/
 - [ ] Add a GIF demonstrating the usage of the application to `README.md`.
 - [ ] Include warnings or disclaimers in `README.md` (e.g., potential issues, limitations, or usage notes).
 - [ ] Refactor the codebase to adhere to PEP8 standards.
-- [ ] Run a linter (e.g., `flake8`) to identify and fix any remaining style violations.
 - [ ] Write additional unit tests for critical components of the application.
+- [ ] Improve security

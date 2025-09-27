@@ -28,7 +28,7 @@ This project is educational and showcases how AI agents work at a conceptual lev
 2. **Set up your `.env` file**  
    Create a `.env` file in the project root with your Gemini API key:
    ```
-   GEMINI_API_KEY=your-key-here
+   GEMINI_API_KEY="your-key-here"
    ```
 
 3. **Run the AI bot with a your prompt**  
@@ -64,9 +64,17 @@ bootdev-ai-bot/
 │   └── write_file.py
 ├── main.py
 ├── prompts.py
-├── tests.py
+├── calculator/
+│   ├── main.py
+│   ├── tests.py
+│   ├── lorem.txt
+│   └── pkg/
+│       ├── calculator.py
+│       ├── render.py
+│       └── morelorem.txt
 ├── .env
-└── README.md
+├── README.md
+└── requirements.txt
 ```
 
 - `main.py` — Entry point for the AI bot CLI

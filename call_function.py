@@ -22,8 +22,6 @@ def call_function(function_call_part, verbose=False):
         "write_file": write_file,
     }
 
-    
-    
     if verbose:
         print(f"Calling function: {function_call_part.name}({function_call_part.args})")
     else:
@@ -32,6 +30,12 @@ def call_function(function_call_part, verbose=False):
     function_name = function_call_part.name
     args = dict(function_call_part.args)
     args['working_directory'] = WORKING_DIR # Manually add working dir to dictionary
+    
+    # Debug: Print details when writing to a file
+    #if function_name == "write_file":
+    #    print(f"Writing to file: {args['file_path']}")
+    #    print(f"New content:\n{args['content'][:200]}...")  # Print first 200 chars
+
     function_result = function_map[function_name](**args) # Unpack args dictionary into function parameters
     if function_name not in function_map:
         return types.Content(

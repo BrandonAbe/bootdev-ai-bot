@@ -49,3 +49,11 @@ bootdev-ai-bot/
 - `prompts.py` — System prompt 
 - `tests.py` — Unit and integration tests
 - `.env` — Environment variables (API key)
+
+## Planned Improvements
+- [ ] Test the development environment setup to ensure it works seamlessly.
+- [ ] Add a GIF demonstrating the usage of the application to `README.md`.
+- [ ] Include warnings or disclaimers in `README.md` (e.g., potential issues, limitations, or usage notes).
+- [ ] Refactor the codebase to adhere to PEP8 standards.
+- [ ] Run a linter (e.g., `flake8`) to identify and fix any remaining style violations.
+- [ ] Write additional unit tests for critical components of the application.

@@ -88,7 +88,7 @@ bootdev-ai-bot/
 ## Planned Improvements
 - [ ] Test the development environment setup to ensure it works seamlessly.
 - [ ] Add a GIF demonstrating the usage of the application to `README.md`.
-- [ ] Include warnings or disclaimers in `README.md` (e.g., potential issues, limitations, or usage notes).
+- [X] Include warnings or disclaimers in `README.md` (e.g., potential issues, limitations, or usage notes).
 - [ ] Refactor the codebase to adhere to PEP8 standards.
 - [ ] Write additional unit tests for critical components of the application.
 - [ ] Improve security
